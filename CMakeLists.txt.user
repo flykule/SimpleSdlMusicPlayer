@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.7.2, 2019-01-21T10:07:00. -->
+<!-- Written by QtCreator 4.7.2, 2019-01-21T16:46:14. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -341,7 +341,7 @@
      <value type="int">13</value>
      <value type="int">14</value>
     </valuelist>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments">~/Videos/SomethingJustLikeThis.mp4</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments">~/Videos/龙卷风.flv</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/home/castle/QtProjects/build-SDL_MusicPlayer-Desktop_Qt_5_11_2_GCC_64bit-Default</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>

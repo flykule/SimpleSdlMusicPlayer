@@ -108,8 +108,8 @@ int main(int argc, char* argv[])
     //nb_samples: AAC-1024 MP3-1152
     int out_nb_samples = avctx->frame_size;
     enum AVSampleFormat out_sample_fmt = AV_SAMPLE_FMT_S16;
-    int out_sample_rate = 44100;
-    int out_channels = av_get_channel_layout_nb_channels(out_channel_layout);
+    int out_sample_rate = avctx->sample_rate;
+    int out_channels = avctx->channels;
     //Out Buffer Size
     int out_buffer_size = av_samples_get_buffer_size(NULL, out_channels, out_nb_samples, out_sample_fmt, 1);
 
@@ -119,11 +119,11 @@ int main(int argc, char* argv[])
     //SDL_AudioSpec
     SDL_AudioSpec wanted_spec;
     SDL_AudioSpec spec;
-    wanted_spec.freq = 44100;
+    wanted_spec.freq = out_sample_rate;
     wanted_spec.format = AUDIO_S16SYS;
-    wanted_spec.channels = 2;
+    wanted_spec.channels = out_channels;
     wanted_spec.silence = 0;
-    wanted_spec.samples = 1024;
+    wanted_spec.samples = out_nb_samples;
     wanted_spec.callback = fill_audio;
     wanted_spec.userdata = avctx;
     int64_t in_channel_layout;
@@ -141,8 +141,7 @@ int main(int argc, char* argv[])
     in_channel_layout = av_get_default_channel_layout(avctx->channels);
     //Swr
 
-    au_convert_ctx = swr_alloc();
-    au_convert_ctx = swr_alloc_set_opts(au_convert_ctx, (int64_t)out_channel_layout, out_sample_fmt, out_sample_rate,
+    au_convert_ctx = swr_alloc_set_opts(NULL, (int64_t)out_channel_layout, out_sample_fmt, out_sample_rate,
                                         in_channel_layout, avctx->sample_fmt, avctx->sample_rate, 0, NULL);
     swr_init(au_convert_ctx);
 
@@ -150,10 +149,13 @@ int main(int argc, char* argv[])
     SDL_PauseAudio(0);
     int index = 0;
 
+    //读取下一帧,如果小于0,代表发生错误或者播放完毕
     while (av_read_frame(pFormatCtx, packet) >= 0)
     {
+        //判断stream的index索引
         if (packet->stream_index == audioStream)
         {
+            //从packet中读取packet->size*packet->data的数据到pFrame中,有时候一次读取是不够的,这里进行简化处理
             int ret = avcodec_decode_audio4(avctx, pFrame, &got_picture, packet);
 
             if (ret < 0)

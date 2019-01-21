@@ -27,11 +27,14 @@ set(INCLUDES
 )
 
 FILE(GLOB_RECURSE SOURCES "src/*.c")
-FILE(GLOB_RECURSE SOURCES "src/*.cpp")
 FILE(GLOB INSTALL_HEADERS "include/*.h")
+
+#add_library(SDL_MUSICSource SHARED ${SOURCES})
+#add_library(SDL_MUSICSource_static STATIC ${SOURCES})
 
 add_compile_options(${FFMPEG_CFLAGS_OTHER})
 add_executable(${PROJECT_NAME} src/main.c)
+#add_executable(${PROJECT_NAME} src/scale_video.c)
 
 include_directories(${INCLUDES})
 target_link_libraries(${PROJECT_NAME} ${FFMPEG_LDFLAGS_OTHER}) # It is OK to have link flags here
